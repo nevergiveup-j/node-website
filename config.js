@@ -8,10 +8,10 @@ module.exports = {
 	// 客户端路径
 	publicDir: publicDir,
 	mongodb: {
-        // host: process.env.MONGODB_HOST || '',
+         host: 'mongodb://localhost/TaskManager',
         // port: process.env.MONGODB_PORT || '',
         // db: process.env.MONGODB_DATABASE || '',
-        // username: process.env.MONGODB_USERNAME || '',
-        // password: process.env.MONGODB_PASSWORD || ''
-    },
+         username: 'admin',
+         password: 'admin'
+    }
 }
