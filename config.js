@@ -8,7 +8,7 @@ module.exports = {
 	// 客户端路径
 	publicDir: publicDir,
 	mongodb: {
-         host: 'mongodb://localhost/TaskManager',
+         host: 'localhost/test',
         // port: process.env.MONGODB_PORT || '',
         // db: process.env.MONGODB_DATABASE || '',
          username: 'admin',

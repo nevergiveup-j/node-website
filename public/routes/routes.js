@@ -20,8 +20,8 @@ exports.init = function() {
 	app.use('/static', express.static(path.join(config.publicDir, 'assets')));
 
 	app.set('views', config.publicDir + '/views');
-	app.set('view engine', 'jade');
-	app.engine('jade', require('jade').__express);
+	app.set('view engine', 'ejs');
+	//app.engine('ejs', require('ejs').__express);
 
 	app.get('/', function (req, res) {
 	  res.render('index',
@@ -29,8 +29,8 @@ exports.init = function() {
 	  )
 	});
 
-	app.get('/about', function (req, res) {
-	  res.render('about',
+	app.get('/login', function (req, res) {
+	  res.render('login',
 	  	{ pageTitle : 'about' }
 	  )
 	});

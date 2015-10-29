@@ -12,8 +12,8 @@
   "author": "wangjun",
   "license": "ISC",
   "dependencies": {
+    "ejs": "^2.3.4",
     "express": "^4.13.3",
-    "jade": "^1.11.0",
     "mongoose": "^4.1.12",
     "node-sass-middleware": "^0.9.6"
   }
