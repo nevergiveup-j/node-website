@@ -4,7 +4,7 @@ var path = require('path');
 var publicDir = process.cwd() + '/public';
 
 module.exports = {
-	port: 3001,
+	port: process.env.PORT || 3001,
 	// 客户端路径
 	publicDir: publicDir,
 	mongodb: {

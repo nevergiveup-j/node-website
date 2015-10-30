@@ -1,41 +1,46 @@
 var express = require('express');
-var sassMiddleware = require('node-sass-middleware');
-var path = require('path');
 var config = require(process.cwd() + '/config');
-var getData = require(config.publicDir + '/assets/js/getData.js');
+var loginDB = require(config.publicDir + '/models/login');
 
-var app = express();
 
-exports.init = function() {
-	// sass conifg
-	app.use(sassMiddleware({
-	    src: path.join(config.publicDir, 'assets/sass'),
-	    dest: path.join(config.publicDir, 'assets/css'),
-	    debug: true,
-	    force: true,
-	    outputStyle: 'expanded',
-	    prefix:  '/static/css'
-	}));
+var router = express.Router();
 
-	app.use('/static', express.static(path.join(config.publicDir, 'assets')));
+router.get('/', function (req, res) {
+	res.render('index',
+		{ pageTitle : 'Home' }
+	)
+});
 
-	app.set('views', config.publicDir + '/views');
-	app.set('view engine', 'ejs');
-	//app.engine('ejs', require('ejs').__express);
+router.get('/login', function (req, res) {
+  res.render('login',
+  	{ pageTitle : 'about' }
+  )
+});
 
-	app.get('/', function (req, res) {
-	  res.render('index',
-	  	{ pageTitle : 'Home' }
-	  )
-	});
+router.post('/login', function(req, res) {
 
-	app.get('/login', function (req, res) {
-	  res.render('login',
-	  	{ pageTitle : 'about' }
-	  )
-	});
+});
 
-	app.get('/test', getData.insert);
+router.get('/register', function(req, res) {
 
-	app.listen(config.port);	
+});
+
+router.get('/logout', function(req, res) {
+
+});
+
+router.get('/profile', isLoggedIn, function(req, res) {
+	res.render('profile',
+		{ pageTitle : 'profile' }
+	)
+});
+
+function isLoggedIn(req, res, next) {
+
+	if (req.isAuthenticated())
+		return next();
+
+	res.redirect('/');
 }
+
+module.exports = router;
