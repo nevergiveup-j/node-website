@@ -1,6 +1,8 @@
-var config = require('../config');
+var config = require(process.cwd() + '/config/config');
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://' + config.mongodb.host);
+mongoose.connect('mongodb://' + config.mongodb.host + config.mongodb.db);
 
-exports.mongoose = mongoose;
+
+
+module.exports = mongoose;

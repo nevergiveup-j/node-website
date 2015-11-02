@@ -1,0 +1,27 @@
+<% include ./components/header %>
+
+<div class="am-g">
+    <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
+        <h3>注册</h3>
+
+        <form method="post" class="am-form">
+            <label for="email">邮箱:</label>
+            <input type="email" name="email" value="">
+            <br>
+            <label for="password">密码:</label>
+            <input type="password" name="password" value="">
+            <br>
+            <label for="password">确认密码:</label>
+            <input type="password" name="passwordRepeat" value="">
+            <br />
+            <div class="am-cf">
+                <input type="submit" name="" value="注 册" class="am-btn am-btn-primary am-btn-sm am-fl">
+            </div>
+            <div class="error">
+                <%= error%>
+            </div>
+        </form>
+    </div>
+</div>
+
+<% include ./components/footer %>

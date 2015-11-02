@@ -1,0 +1,40 @@
+@charset "utf-8";
+
+@import "vendor/sassCore/base";
+@import "vendor/sassCore/core/reset";
+
+// 灰色遮罩怎么去掉
+a, button, input, textarea{
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+// 浮动及闭合浮动
+.fn-fl{
+    @include float;
+}
+.fn-fr{
+    @include float(right);
+}
+*, *:before, *:after {
+     @include box-sizing(border-box);
+}
+
+.fn-clear {
+    display:block;
+    float:none;
+    clear:both;
+    overflow:hidden;
+    width:auto;
+    height:0;
+    margin:0 auto;
+    padding:0;
+    font-size:0;
+    line-height:0;
+}
+.fn-clearfix {
+    @extend %clearfix;
+}
+
+.fn-hide {
+    display: none;
+}
+
