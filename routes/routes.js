@@ -1,5 +1,5 @@
 var express = require('express');
-
+var crypto = require('crypto');
 var config = require(process.cwd() + '/config/config');
 
 var router = express.Router();
@@ -31,15 +31,27 @@ router.get('/reg', function(req, res) {
 });
 
 router.post('/reg', function(req, res) {
-	var email = req.body.email,
-		passport = req.body.passport,
-		passportRepeat = req.body.passwordRepeat;
+	var email = req.body.email.trim(),
+		password = req.body.password.trim(),
+		passwordRepeat = req.body.passwordRepeat.trim();
 
-	if(passportRepeat != passport) {
+	if(!email.length || !password.length || !passwordRepeat.length) {
+		req.flash('error', '不能为空!');
+
+		return res.redirect('/reg');
+	}
+
+	if(passwordRepeat != password) {
 		req.flash('error', '两次输入的密码不一致!');
 
 		return res.redirect('/reg');
 	}
+
+	var md5 = crypto.createHash('md5');
+
+	password = md5.update(password).digest('hex');
+
+	console.log(password);
 });
 
 router.get('/logout', function(req, res) {
