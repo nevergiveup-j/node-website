@@ -1,27 +1,62 @@
 var express = require('express');
 var crypto = require('crypto');
-var session = require('express-session');
 
 var config = require(process.cwd() + '/config/config');
 var user = require(process.cwd() +  '/models/user');
+var regVerify = require(process.cwd() + '/models/regVerify');
+
 
 var router = express.Router();
 
 
 router.get('/', function (req, res) {
 	res.render('index',
-		{ pageTitle : '主页' }
+		{
+			pageTitle : '主页',
+			success: req.flash('success').toString()
+		}
 	)
 });
 
 router.get('/login', function (req, res) {
   res.render('login',
-  	{ pageTitle : '登录' }
+  	{
+		pageTitle : '登录',
+		error: req.flash('error').toString()
+	}
   )
 });
 
 router.post('/login', function(req, res) {
-	res.render('profile')
+	var email = req.body.email.trim();
+	var password = req.body.password.trim();
+
+	if(!email.length || !password.length) {
+		req.flash('error', '不能为空!');
+
+		return res.redirect('/login');
+	}
+
+	var md5 = crypto.createHash('md5');
+
+	password = md5.update(password).digest('hex');
+
+	user.get(email, function(err, user) {
+		if(!user) {
+			req.flash('error', '邮箱不存在!');
+			return res.redirect('/login');
+		}
+
+		if(password != user.password) {
+			req.flash('error', '密码错误!');
+			return res.redirect('/login');
+		}
+
+		req.session.user = user;
+		req.flash('success', '登录成功！');
+		res.redirect('/');
+	})
+
 });
 
 router.get('/reg', function(req, res) {
@@ -34,53 +69,7 @@ router.get('/reg', function(req, res) {
 });
 
 router.post('/reg', function(req, res) {
-	var email = req.body.email.trim(),
-		password = req.body.password.trim(),
-		passwordRepeat = req.body.passwordRepeat.trim();
-
-	if(!email.length || !password.length || !passwordRepeat.length) {
-		req.flash('error', '不能为空!');
-
-		return res.redirect('/reg');
-	}
-
-	if(passwordRepeat != password) {
-		req.flash('error', '两次输入的密码不一致!');
-
-		return res.redirect('/reg');
-	}
-
-	var md5 = crypto.createHash('md5');
-
-	password = md5.update(password).digest('hex');
-
-	var newUser = new user({
-		email: email,
-		password: password
-	});
-
-	user.get(email, function(err, user){
-		if(err) {
-			req.flash('error', err);
-			return res.redirect('/reg');
-		}
-
-		if(user) {
-			req.flash('error', '用户已存在!');
-			return res.redirect('/reg');
-		}
-
-		newUser.save(function(err, user) {
-			if(err) {
-				req.flash('error', err);
-				return res.redirect('/reg');
-			}
-
-			req.session.user = user;
-			req.flash('success', '注册成功！');
-			res.redirect('/');
-		});
-	});
+	new regVerify(req, res);
 });
 
 router.get('/logout', function(req, res) {
