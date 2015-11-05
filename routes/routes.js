@@ -1,6 +1,9 @@
 var express = require('express');
 var crypto = require('crypto');
+var session = require('express-session');
+
 var config = require(process.cwd() + '/config/config');
+var user = require(process.cwd() +  '/models/user');
 
 var router = express.Router();
 
@@ -51,7 +54,33 @@ router.post('/reg', function(req, res) {
 
 	password = md5.update(password).digest('hex');
 
-	console.log(password);
+	var newUser = new user({
+		email: email,
+		password: password
+	});
+
+	user.get(email, function(err, user){
+		if(err) {
+			req.flash('error', err);
+			return res.redirect('/reg');
+		}
+
+		if(user) {
+			req.flash('error', '用户已存在!');
+			return res.redirect('/reg');
+		}
+
+		newUser.save(function(err, user) {
+			if(err) {
+				req.flash('error', err);
+				return res.redirect('/reg');
+			}
+
+			req.session.user = user;
+			req.flash('success', '注册成功！');
+			res.redirect('/');
+		});
+	});
 });
 
 router.get('/logout', function(req, res) {
