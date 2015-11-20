@@ -3,7 +3,8 @@ var mongoose = require(process.cwd() + '/db/db');
 
 var userSchema = new mongoose.Schema({
     email: String,
-    password: String
+    password: String,
+    level: Number
 });
 
 var userModel = mongoose.model('User', userSchema);

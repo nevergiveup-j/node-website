@@ -13,14 +13,14 @@ var routes = require('./routes/routes');
 var app = express();
 
 // sass conifg
-//app.use(sassMiddleware({
-//    src: path.join(config.publicDir, 'assets/sass'),
-//    dest: path.join(config.publicDir, 'assets/css'),
-//    debug: true,
-//    force: true,
-//    outputStyle: 'expanded',
-//    prefix:  '/static/css'
-//}));
+app.use(sassMiddleware({
+    src: path.join(config.publicDir, 'assets/sass'),
+    dest: path.join(config.publicDir, 'assets/css'),
+    debug: true,
+    force: true,
+    outputStyle: 'expanded',
+    prefix:  '/static/css'
+}));
 
 app.use(cookieParser());
 app.use(session({
@@ -36,6 +36,6 @@ app.use('/static', express.static(path.join('public')));
 app.set('views', './views');
 app.set('view engine', 'ejs');
 
-app.all('*', routes);
+app.use('/', routes);
 
 app.listen(config.port);

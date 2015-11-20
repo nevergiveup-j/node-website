@@ -18,7 +18,7 @@ router.get('/', function (req, res) {
 	)
 });
 
-router.get('/login', function (req, res) {
+router.get('/login', isLoggedIn, function (req, res) {
   res.render('login',
   	{
 		pageTitle : '登录',
@@ -59,7 +59,7 @@ router.post('/login', function(req, res) {
 
 });
 
-router.get('/reg', function(req, res) {
+router.get('/reg', isLoggedIn, function(req, res) {
 	res.render('reg',
 		{
 			pageTitle : '注册',
@@ -73,7 +73,14 @@ router.post('/reg', function(req, res) {
 });
 
 router.get('/logout', function(req, res) {
+	req.session.user = null;
 
+	res.render('logout',
+		{
+			pageTitle : '登出',
+			success: '登出成功！'
+		}
+	)
 });
 
 router.get('/profile', function(req, res) {
@@ -100,8 +107,9 @@ router.use(function(err, req, res, next) {
 
 
 function isLoggedIn(req, res, next) {
+	console.log(req.session);
 
-	if (req.isAuthenticated())
+	if (!req.session.user)
 		return next();
 
 	res.redirect('/');
