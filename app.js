@@ -14,8 +14,8 @@ var app = express();
 
 // sass conifg
 app.use(sassMiddleware({
-    src: path.join(config.publicDir, 'assets/sass'),
-    dest: path.join(config.publicDir, 'assets/css'),
+    src: path.join(process.cwd(), 'public/sass'),
+    dest: path.join(process.cwd(), 'public/css'),
     debug: true,
     force: true,
     outputStyle: 'expanded',
